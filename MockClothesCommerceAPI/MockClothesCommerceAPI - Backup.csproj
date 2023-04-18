@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	  <ProjectReference Include="..\MockClothesCommerceAPI.Contracts\MockClothesCommerceAPI.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MockClothesCommerceAPI.Contracts\MockClothesCommerceAPI.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
