@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockClothesCommerceAPI.Contracts", "MockClothesCommerceAPI.Contracts\MockClothesCommerceAPI.Contracts.csproj", "{D6A7C281-F40F-41A2-B36E-2B6E517DF694}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockClothesCommerceAPI", "MockClothesCommerceAPI\MockClothesCommerceAPI.csproj", "{C0820F09-A36E-4913-8CD4-4CD5C64BF74A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6A7C281-F40F-41A2-B36E-2B6E517DF694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A7C281-F40F-41A2-B36E-2B6E517DF694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A7C281-F40F-41A2-B36E-2B6E517DF694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A7C281-F40F-41A2-B36E-2B6E517DF694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0820F09-A36E-4913-8CD4-4CD5C64BF74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0820F09-A36E-4913-8CD4-4CD5C64BF74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0820F09-A36E-4913-8CD4-4CD5C64BF74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0820F09-A36E-4913-8CD4-4CD5C64BF74A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
