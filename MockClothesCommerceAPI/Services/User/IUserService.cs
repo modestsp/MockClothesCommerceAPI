@@ -1,16 +1,16 @@
-﻿using ErrorOr;
-using MockClothesCommerceAPI.Contracts.User;
+﻿using MockClothesCommerceAPI.Contracts.User;
 
 namespace MockClothesCommerceAPI.Services.User;
 
 public interface IUserService
 {
     ICollection<Models.User> GetUsers();
-    void CreateUser(Models.User user);
-    ErrorOr<Models.User> GetUser(int id);
-    Task UpdateUser(int id, UpdateUserRequest updateUserRequest);
-    void DeleteUser(int id);
-
+    bool CreateUser(Models.User user);
+    Models.User GetUser(int id);
+    bool UpdateUser(int id, UpdateUserRequest user);
+    bool DeleteUser(Models.User user);
+    bool UserExists(int id);
+    bool Save();
     //UserResponse UpdateUser(UpdateUserRequest request);
     //ICollection<UserResponse> GetUsers();
 }

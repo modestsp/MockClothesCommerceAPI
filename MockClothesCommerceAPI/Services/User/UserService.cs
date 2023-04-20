@@ -1,7 +1,5 @@
-﻿using ErrorOr;
-using MockClothesCommerceAPI.Contracts.User;
+﻿using MockClothesCommerceAPI.Contracts.User;
 using MockClothesCommerceAPI.Data;
-using MockClothesCommerceAPI.ServiceErrors;
 
 namespace MockClothesCommerceAPI.Services.User
 {
@@ -14,52 +12,55 @@ namespace MockClothesCommerceAPI.Services.User
             _context = context;
         }
 
-        public void CreateUser(Models.User user)
+        public bool UserExists(int id)
+        {
+            return _context.Users.Any(u => u.Id == id);
+        }
+        /*Create a user*/
+        public bool CreateUser(Models.User user)
         {
             _context.Users.Add(user);
-            _context.SaveChanges();
-            return;
+            return Save();
         }
 
-        public void DeleteUser(Models.User User)
+        /*Deletes a user*/
+        public bool DeleteUser(Models.User user)
         {
-            _context.Users.Remove(User);
-            _context.SaveChanges();
-            return;
+            _context.Users.Remove(user);
+            return Save();
         }
 
-        public void DeleteUser(int id)
+        /*Get a single user*/
+        public Models.User GetUser(int id)
         {
-            var userToDelete = _context.Users.Find(id);
-            _context.Users.Remove(userToDelete);
-            _context.SaveChanges();
-            return;
+            return _context.Users.Find(id);
         }
 
-        public ErrorOr<Models.User> GetUser(int id)
-        {
-            if (_context.Users.Any(u => u.Id == id))
-                return _context.Users.Where(u => u.Id == id).FirstOrDefault();
-
-            return Errors.User.NotFound;
-        }
-
+        /*Get a list of users*/
         public ICollection<Models.User> GetUsers()
         {
             var users = _context.Users.ToList();
-            Console.WriteLine($"Retrieved {users.Count} users");
             return users;
         }
 
-        public async Task UpdateUser(int id, UpdateUserRequest updateUserRequest)
+        /*Updates a user*/
+        public bool UpdateUser(int userId, UpdateUserRequest userUpdated)
         {
+            var existingUser = _context.Users.Find(userId);
 
-            var userToUpdate = await _context.Users.FindAsync(id);
-            if (updateUserRequest.Name is not null) userToUpdate.Name = updateUserRequest.Name;
-            if (updateUserRequest.Email is not null) userToUpdate.Email = updateUserRequest.Email;
-            if (updateUserRequest.Password is not null) userToUpdate.Password = updateUserRequest.Password;
+            if (userUpdated.Name is not null) existingUser.Name = userUpdated.Name;
+            if (userUpdated.Email is not null) existingUser.Name = userUpdated.Email;
+            if (userUpdated.Password is not null) existingUser.Name = userUpdated.Password;
 
-            await _context.SaveChangesAsync();
+            return Save();
         }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+
+            return saved > 0;
+        }
+
     }
 }
