@@ -1,5 +1,5 @@
-﻿using MockClothesCommerceAPI.Contracts.Category;
-using MockClothesCommerceAPI.Data;
+﻿using MockClothesCommerceAPI.Data;
+using MockClothesCommerceAPI.Dtos;
 
 namespace MockClothesCommerceAPI.Services.Category;
 
@@ -34,7 +34,14 @@ public class CategoryService : ICategoryService
     /*Get a single category*/
     public Models.Category GetCategory(int categoryId)
     {
-        return _context.Categories.Find(categoryId);
+        return _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+    }
+
+    public ICollection<Models.Product> GetProductsFromCategory(int categoryId)
+    {
+        return _context.Products
+            .Where(p => p.CategoryId == categoryId).ToList();
+
     }
 
     /*Get a list of categories*/
