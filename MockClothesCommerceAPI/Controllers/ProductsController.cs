@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MockClothesCommerceAPI.Contracts.Product;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MockClothesCommerceAPI.Dtos;
 using MockClothesCommerceAPI.Models;
+using MockClothesCommerceAPI.Services.Category;
 using MockClothesCommerceAPI.Services.Product;
+using MockClothesCommerceAPI.Services.Review;
+using MockClothesCommerceAPI.Services.User;
 
 namespace MockClothesCommerceAPI.Controllers;
 
@@ -10,10 +14,22 @@ namespace MockClothesCommerceAPI.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
+    private readonly IReviewService _reviewService;
+    private readonly ICategoryService _categoryService;
+    private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService,
+        IReviewService reviewService,
+        ICategoryService categoryService,
+        IUserService userService,
+        IMapper mapper)
     {
         _productService = productService;
+        _reviewService = reviewService;
+        _categoryService = categoryService;
+        _userService = userService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -39,11 +55,13 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateProduct([FromBody] CreateProductRequest request)
+    public IActionResult CreateProduct([FromBody] CreateProductRequest createdProduct)
     {
-        if (request is null) return BadRequest(ModelState);
+        if (createdProduct is null) return BadRequest(ModelState);
+        if (!_categoryService.CategoryExists(createdProduct.CategoryId)) return NotFound("Category not found");
+        var category = _categoryService.GetCategory(createdProduct.CategoryId);
         var product = _productService.GetProducts()
-            .Where(u => u.Name.Trim().ToUpper() == request.Name.TrimEnd().ToUpper())
+            .Where(u => u.Name.Trim().ToUpper() == createdProduct.Name.TrimEnd().ToUpper())
             .FirstOrDefault();
 
         if (product != null)
@@ -54,15 +72,7 @@ public class ProductsController : ControllerBase
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var newProduct = new Product
-        {
-            Name = request.Name,
-            Description = request.Description,
-            Price = request.Price,
-            CreatedAt = DateTime.UtcNow,
-            ModifiedAt = DateTime.UtcNow,
-            Tags = request.Tags,
-        };
+        var newProduct = _mapper.Map<Product>(createdProduct);
 
         if (!_productService.CreateProduct(newProduct))
         {
@@ -70,9 +80,10 @@ public class ProductsController : ControllerBase
             return StatusCode(500, ModelState);
         }
 
-        return Ok(newProduct);
-    }
+        var createdProductResponse = _mapper.Map<CreateProductResponse>(newProduct);
 
+        return Ok(createdProductResponse);
+    }
 
 
     [HttpPut("{productId}")]
@@ -105,6 +116,43 @@ public class ProductsController : ControllerBase
         if (productToDelete is null) return NotFound();
         _productService.DeleteProduct(productToDelete);
         return NoContent();
+    }
+
+    [HttpPost("{productId}/reviews")]
+    public IActionResult AddAReview([FromBody] CreateReviewRequest request)
+    {
+        if (request is null) return BadRequest(ModelState);
+
+        var product = _productService.GetProduct(request.ProductId);
+        var user = _userService.GetUser(request.UserId);
+        if (product is null) return NotFound("Product does not exists");
+        if (user is null) return NotFound("User does not exists");
+
+        var newReview = _mapper.Map<Review>(request);
+
+        if (!_reviewService.CreateReview(newReview))
+        {
+            ModelState.AddModelError("", "Something went wrong while adding a review");
+            return StatusCode(500, ModelState);
+        }
+
+        var createdReviewResponse = _mapper.Map<CreateReviewResponse>(newReview);
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return Ok(createdReviewResponse);
+    }
+
+    [HttpGet("{productId}/reviews")]
+    public IActionResult GetReviews(int productId)
+    {
+        if (!_productService.ProductExists(productId)) return NotFound();
+
+        var reviewsMap = _mapper.Map<List<GetReviewResponse>>(_productService.GetReviews(productId));
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return Ok(reviewsMap);
     }
 
 }
