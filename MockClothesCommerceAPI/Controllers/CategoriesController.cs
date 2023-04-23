@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MockClothesCommerceAPI.Contracts.Category;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MockClothesCommerceAPI.Dtos;
 using MockClothesCommerceAPI.Models;
 using MockClothesCommerceAPI.Services.Category;
 
@@ -10,10 +11,13 @@ namespace MockClothesCommerceAPI.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _categoryService;
+    private readonly IMapper _mapper;
 
-    public CategoriesController(ICategoryService categoryService)
+    public CategoriesController(ICategoryService categoryService,
+        IMapper mapper)
     {
         _categoryService = categoryService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -31,8 +35,8 @@ public class CategoriesController : ControllerBase
     {
         if (!_categoryService.CategoryExists(categoryId)) return NotFound();
 
-        var category = _categoryService.GetCategory(categoryId);
-
+        var category = _mapper.Map<GetCategoryResponse>(_categoryService.GetCategory(categoryId));
+        //var category = _categoryService.GetCategory(categoryId);
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
         return Ok(category);
@@ -59,7 +63,6 @@ public class CategoriesController : ControllerBase
             Name = request.Name,
             CreatedAt = DateTime.UtcNow,
             ModifiedAt = DateTime.UtcNow,
-            Products = new List<Product>(),
         };
 
         if (!_categoryService.CreateCategory(newCategory))
@@ -103,6 +106,30 @@ public class CategoriesController : ControllerBase
         if (categoryToDelete is null) return NotFound();
         _categoryService.DeleteCategory(categoryToDelete);
         return NoContent();
+    }
+
+    [HttpGet("{categoryId}/products")]
+    public IActionResult GetProductsFromCategory(int categoryId)
+    {
+
+        //if (categoryId is null) return BadRequest(ModelState);
+        //if (categoryId != request.ProductId) return BadRequest();
+
+        //var category = _categoryService.GetProduct(categoryId);
+
+        if (!_categoryService.CategoryExists(categoryId)) return NotFound("Category not found");
+
+        var products = _mapper.Map<List<GetProductResponse>>(_categoryService.GetProductsFromCategory(categoryId));
+        //   if (!_reviewService.CreateReview(newReview))
+        //   {
+        //      ModelState.AddModelError("", "Something went wrong while adding a review");
+        //       return StatusCode(500, ModelState);
+        // }
+
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return Ok(products);
     }
 
 }
