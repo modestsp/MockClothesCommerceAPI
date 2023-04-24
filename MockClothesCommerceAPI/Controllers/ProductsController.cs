@@ -118,6 +118,26 @@ public class ProductsController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("{productId}/favorites")]
+    public IActionResult AddAFavorite(CreateFavoriteRequest request)
+    {
+        if (request is null) return BadRequest(request);
+
+        if (!_userService.UserExists(request.UserId)) return NotFound("User does not exists");
+        if (!_productService.ProductExists(request.ProductId)) return NotFound("Product does not exists");
+
+        if (!_productService.AddProductToFavorites(request.UserId, request.ProductId))
+        {
+            ModelState.AddModelError("", "Something went wrong while adding a to favorites");
+            return StatusCode(500, ModelState);
+        }
+
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return NoContent();
+    }
+
     [HttpPost("{productId}/reviews")]
     public IActionResult AddAReview([FromBody] CreateReviewRequest request)
     {
