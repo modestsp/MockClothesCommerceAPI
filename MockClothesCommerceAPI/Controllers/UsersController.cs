@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MockClothesCommerceAPI.Contracts.User;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MockClothesCommerceAPI.Dtos;
 using MockClothesCommerceAPI.Models;
+using MockClothesCommerceAPI.Services.Product;
 using MockClothesCommerceAPI.Services.User;
 
 namespace MockClothesCommerceAPI.Controllers;
@@ -10,10 +12,14 @@ namespace MockClothesCommerceAPI.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
+    private readonly IProductService _productService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, IMapper mapper, IProductService productService)
     {
         _userService = userService;
+        _mapper = mapper;
+        _productService = productService;
     }
 
     [HttpGet]
@@ -24,7 +30,7 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{userId}")]
     [ProducesResponseType(404)]
     [ProducesResponseType(200)]
     public IActionResult GetUser(int userId)
@@ -33,10 +39,21 @@ public class UsersController : ControllerBase
 
         var user = _userService.GetUser(userId);
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         return Ok(user);
     }
+
+    [HttpGet("{userId}/favorites")]
+    public IActionResult GetFavoriteProducts(int userId)
+    {
+        if (!_userService.UserExists(userId)) return NotFound();
+
+        var favorites = _userService.Favorites(userId);
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return Ok(favorites);
+    }
+
 
     [HttpPost]
     public IActionResult CreateUser([FromBody] CreateUserRequest request)
@@ -54,16 +71,7 @@ public class UsersController : ControllerBase
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var newUser = new User
-        {
-            Username = request.Username,
-            Name = request.Name,
-            Email = request.Email,
-            Password = request.Password,
-            CreatedAt = DateTime.UtcNow,
-            ModifiedAt = DateTime.UtcNow,
-            Reviews = new List<Review>(),
-        };
+        var newUser = _mapper.Map<User>(request);
 
         if (!_userService.CreateUser(newUser))
         {
@@ -106,6 +114,39 @@ public class UsersController : ControllerBase
         if (userToDelete is null) return NotFound();
         _userService.DeleteUser(userToDelete);
         return NoContent();
+    }
+
+    [HttpDelete("{userId}/favorites/{productId}")]
+    public IActionResult DeleteFavoriteProduct(DeleteFavoriteRequest request)
+    {
+        if (request is null) return BadRequest(request);
+
+        if (!_userService.UserExists(request.UserId)) return NotFound("User does not exists");
+        if (!_productService.ProductExists(request.ProductId)) return NotFound("Product does not exists");
+
+        if (!_productService.DeleteFavoriteProduct(request.UserId, request.ProductId))
+        {
+            ModelState.AddModelError("", "Something went wrong while adding a to favorites");
+            return StatusCode(500, ModelState);
+        }
+
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return NoContent();
+    }
+
+    [HttpGet("{userId}/reviews")]
+    public IActionResult GetReviews(int userId)
+    {
+
+        if (!_userService.UserExists(userId)) return NotFound("User not found");
+
+        var reviews = _mapper.Map<List<GetReviewResponse>>(_userService.GetReviews(userId));
+
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        return Ok(reviews);
     }
 
 }
