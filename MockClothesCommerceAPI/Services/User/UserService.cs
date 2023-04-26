@@ -1,5 +1,7 @@
-﻿using MockClothesCommerceAPI.Contracts.User;
+﻿using Microsoft.EntityFrameworkCore;
 using MockClothesCommerceAPI.Data;
+using MockClothesCommerceAPI.Dtos;
+using MockClothesCommerceAPI.Models;
 
 namespace MockClothesCommerceAPI.Services.User
 {
@@ -55,6 +57,32 @@ namespace MockClothesCommerceAPI.Services.User
             return Save();
         }
 
+        public ICollection<Models.Review> GetReviews(int userId)
+        {
+            var reviews = _context.Reviews
+                .Where(r => r.UserId == userId)
+                .Select(r => new Models.Review
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    Rating = r.Rating,
+                    CreatedAt = r.CreatedAt,
+                    ModifiedAt = r.ModifiedAt,
+                    User = new Models.User
+                    {
+                        Id = r.User.Id,
+                        Username = r.User.Username,
+                    },
+                    Product = new Models.Product
+                    {
+                        Id = r.Product.Id,
+                        Name = r.Product.Name,
+                    }
+                });
+
+            return reviews.ToList();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -62,5 +90,13 @@ namespace MockClothesCommerceAPI.Services.User
             return saved > 0;
         }
 
+        public ICollection<FavoriteProduct> Favorites(int userId)
+        {
+            var favoriteProducts = _context.Favorites
+                .Where(f => f.UserId == userId)
+                .Include(f => f.Product)
+                .ToList();
+            return favoriteProducts;
+        }
     }
 }
