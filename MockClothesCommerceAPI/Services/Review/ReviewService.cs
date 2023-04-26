@@ -1,5 +1,5 @@
-﻿using MockClothesCommerceAPI.Contracts.Review;
-using MockClothesCommerceAPI.Data;
+﻿using MockClothesCommerceAPI.Data;
+using MockClothesCommerceAPI.Dtos;
 
 namespace MockClothesCommerceAPI.Services.Review
 {
@@ -50,6 +50,7 @@ namespace MockClothesCommerceAPI.Services.Review
             if (updateReviewRequest.Content is not null) existingReview!.Content = updateReviewRequest.Content;
             if (updateReviewRequest.Rating != existingReview!.Rating) existingReview.Rating = updateReviewRequest.Rating;
 
+            existingReview.ModifiedAt = DateTime.UtcNow;
             return Save();
         }
 

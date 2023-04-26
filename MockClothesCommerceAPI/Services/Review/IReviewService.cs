@@ -1,4 +1,5 @@
-﻿using MockClothesCommerceAPI.Contracts.Review;
+﻿
+using MockClothesCommerceAPI.Dtos;
 
 namespace MockClothesCommerceAPI.Services.Review;
 
