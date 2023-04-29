@@ -12,7 +12,7 @@ public static class CategorySeed
     var context = scope.ServiceProvider.GetService<DataContext>();
 
     context.Database.EnsureCreated();
-    if (!context.Users.Any())
+    if (!context.Categories.Any())
     {
       context.Categories.Add(new Category
       {

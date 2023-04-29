@@ -12,7 +12,7 @@ public static class ProductSeed
     var context = scope.ServiceProvider.GetService<DataContext>();
 
     context.Database.EnsureCreated();
-    if (!context.Users.Any())
+    if (!context.Products.Any())
     {
       context.Products.Add(new Product
       {
