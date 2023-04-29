@@ -10,126 +10,115 @@ namespace MockClothesCommerceAPI.Controllers;
 [ApiController]
 public class CategoriesController : ControllerBase
 {
-    private readonly ICategoryService _categoryService;
-    private readonly IMapper _mapper;
+  private readonly ICategoryService _categoryService;
+  private readonly IMapper _mapper;
 
-    public CategoriesController(ICategoryService categoryService,
-        IMapper mapper)
+  public CategoriesController(ICategoryService categoryService,
+      IMapper mapper)
+  {
+    _categoryService = categoryService;
+    _mapper = mapper;
+  }
+
+  [HttpGet]
+  public async Task<IActionResult> GetCategories()
+  {
+    var categories = await _categoryService.GetCategories();
+
+    return Ok(categories);
+  }
+
+  [HttpGet("{categoryId}")]
+  [ProducesResponseType(404)]
+  [ProducesResponseType(200)]
+  public async Task<IActionResult> GetCategory(int categoryId)
+  {
+    if (!await _categoryService.CategoryExists(categoryId)) return NotFound();
+
+    var category = _mapper.Map<GetCategoryResponse>(await _categoryService.GetCategory(categoryId));
+    //var category = await _categoryService.GetCategory(categoryId);
+    if (!ModelState.IsValid) return BadRequest(ModelState);
+
+    return Ok(category);
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request)
+  {
+    if (request is null) return BadRequest(ModelState);
+    var categories = await _categoryService.GetCategories();
+    var category = categories.Where(u => u.Name.Trim().ToUpper() == request.Name.TrimEnd().ToUpper())
+    .FirstOrDefault();
+
+    if (category != null)
     {
-        _categoryService = categoryService;
-        _mapper = mapper;
+      ModelState.AddModelError("", "Category already exists");
+      return StatusCode(422, ModelState);
     }
 
-    [HttpGet]
-    public IActionResult GetCategories()
-    {
-        var categories = _categoryService.GetCategories();
+    if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        return Ok(categories);
+    var newCategory = new Category
+    {
+      Name = request.Name,
+      CreatedAt = DateTime.UtcNow,
+      ModifiedAt = DateTime.UtcNow,
+    };
+
+    if (!await _categoryService.CreateCategory(newCategory))
+    {
+      ModelState.AddModelError("", "Something went wrong while savin");
+      return StatusCode(500, ModelState);
     }
 
-    [HttpGet("{categoryId}")]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(200)]
-    public IActionResult GetCategory(int categoryId)
+    return Ok(newCategory);
+  }
+
+
+
+  [HttpPut("{categoryId}")]
+  public async Task<IActionResult> UpdateCategory([FromRoute] int categoryId, UpdateCategoryRequest updateCategoryRequest)
+  {
+
+    if (updateCategoryRequest == null)
+      return BadRequest(ModelState);
+
+    if (!await _categoryService.CategoryExists(categoryId))
+      return NotFound();
+    if (!ModelState.IsValid)
+      return BadRequest(ModelState);
+
+
+    if (!await _categoryService.UpdateCategory(categoryId, updateCategoryRequest))
     {
-        if (!_categoryService.CategoryExists(categoryId)) return NotFound();
-
-        var category = _mapper.Map<GetCategoryResponse>(_categoryService.GetCategory(categoryId));
-        //var category = _categoryService.GetCategory(categoryId);
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        return Ok(category);
+      ModelState.AddModelError("", "Something went wrong updating category");
+      return StatusCode(500, ModelState);
     }
 
-    [HttpPost]
-    public IActionResult CreateCategory([FromBody] CreateCategoryRequest request)
-    {
-        if (request is null) return BadRequest(ModelState);
-        var category = _categoryService.GetCategories()
-            .Where(u => u.Name.Trim().ToUpper() == request.Name.TrimEnd().ToUpper())
-            .FirstOrDefault();
-
-        if (category != null)
-        {
-            ModelState.AddModelError("", "Category already exists");
-            return StatusCode(422, ModelState);
-        }
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        var newCategory = new Category
-        {
-            Name = request.Name,
-            CreatedAt = DateTime.UtcNow,
-            ModifiedAt = DateTime.UtcNow,
-        };
-
-        if (!_categoryService.CreateCategory(newCategory))
-        {
-            ModelState.AddModelError("", "Something went wrong while savin");
-            return StatusCode(500, ModelState);
-        }
-
-        return Ok(newCategory);
-    }
+    return NoContent();
+  }
 
 
+  [HttpDelete("{id}")]
+  public async Task<IActionResult> DeleteCategory(int id)
+  {
+    var categoryToDelete = await _categoryService.GetCategory(id);
+    if (categoryToDelete is null) return NotFound();
+    await _categoryService.DeleteCategory(categoryToDelete);
+    return NoContent();
+  }
 
-    [HttpPut("{categoryId}")]
-    public IActionResult UpdateCategory([FromRoute] int categoryId, UpdateCategoryRequest updateCategoryRequest)
-    {
+  [HttpGet("{categoryId}/products")]
+  public async Task<IActionResult> GetProductsFromCategory(int categoryId)
+  {
 
-        if (updateCategoryRequest == null)
-            return BadRequest(ModelState);
+    if (!await _categoryService.CategoryExists(categoryId)) return NotFound("Category not found");
 
-        if (!_categoryService.CategoryExists(categoryId))
-            return NotFound();
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+    var products = _mapper.Map<List<GetProductResponse>>(await _categoryService.GetProductsFromCategory(categoryId));
 
+    if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        if (!_categoryService.UpdateCategory(categoryId, updateCategoryRequest))
-        {
-            ModelState.AddModelError("", "Something went wrong updating category");
-            return StatusCode(500, ModelState);
-        }
-
-        return NoContent();
-    }
-
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteCategory(int id)
-    {
-        var categoryToDelete = _categoryService.GetCategory(id);
-        if (categoryToDelete is null) return NotFound();
-        _categoryService.DeleteCategory(categoryToDelete);
-        return NoContent();
-    }
-
-    [HttpGet("{categoryId}/products")]
-    public IActionResult GetProductsFromCategory(int categoryId)
-    {
-
-        //if (categoryId is null) return BadRequest(ModelState);
-        //if (categoryId != request.ProductId) return BadRequest();
-
-        //var category = _categoryService.GetProduct(categoryId);
-
-        if (!_categoryService.CategoryExists(categoryId)) return NotFound("Category not found");
-
-        var products = _mapper.Map<List<GetProductResponse>>(_categoryService.GetProductsFromCategory(categoryId));
-        //   if (!_reviewService.CreateReview(newReview))
-        //   {
-        //      ModelState.AddModelError("", "Something went wrong while adding a review");
-        //       return StatusCode(500, ModelState);
-        // }
-
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        return Ok(products);
-    }
+    return Ok(products);
+  }
 
 }
