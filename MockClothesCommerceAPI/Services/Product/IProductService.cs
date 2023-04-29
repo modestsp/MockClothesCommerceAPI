@@ -5,16 +5,16 @@ namespace MockClothesCommerceAPI.Services.Product;
 
 public interface IProductService
 {
-    ICollection<Models.Product> GetProducts();
-    bool CreateProduct(Models.Product product);
-    Models.Product GetProduct(int id);
-    bool UpdateProduct(int id, UpdateProductRequest product);
-    bool AddProductToFavorites(int userId, int productId);
-    bool AddReview(Models.Review newReview);
-    bool DeleteProduct(Models.Product product);
-    bool DeleteFavoriteProduct(int userId, int productId);
-    ICollection<Models.Review> GetReviews(int productId);
-    bool ProductExists(int id);
-    bool Save();
+  Task<ICollection<Models.Product>> GetProducts();
+  Task<bool> CreateProduct(Models.Product product);
+  Task<Models.Product> GetProduct(int id);
+  Task<bool> UpdateProduct(int id, UpdateProductRequest product);
+  Task<bool> AddProductToFavorites(int userId, int productId);
+  Task<bool> AddReview(Models.Review newReview);
+  Task<bool> DeleteProduct(Models.Product product);
+  Task<bool> DeleteFavoriteProduct(int userId, int productId);
+  Task<ICollection<Models.Review>> GetReviews(int productId);
+  Task<bool> ProductExists(int id);
+  Task<bool> Save();
 }
 

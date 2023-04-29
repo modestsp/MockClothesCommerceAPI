@@ -5,12 +5,12 @@ namespace MockClothesCommerceAPI.Services.Review;
 
 public interface IReviewService
 {
-    ICollection<Models.Review> GetReviews();
-    bool CreateReview(Models.Review review);
-    Models.Review GetReview(int id);
-    bool UpdateReview(int reviewId, UpdateReviewRequest updatedReview);
-    bool DeleteReview(Models.Review review);
-    bool ReviewExists(int id);
-    bool Save();
+  Task<ICollection<Models.Review>> GetReviews();
+  Task<bool> CreateReview(Models.Review review);
+  Task<Models.Review> GetReview(int id);
+  Task<bool> UpdateReview(int reviewId, UpdateReviewRequest updatedReview);
+  Task<bool> DeleteReview(Models.Review review);
+  Task<bool> ReviewExists(int id);
+  Task<bool> Save();
 }
 

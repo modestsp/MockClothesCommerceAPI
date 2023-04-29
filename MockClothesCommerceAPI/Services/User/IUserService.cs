@@ -4,16 +4,14 @@ namespace MockClothesCommerceAPI.Services.User;
 
 public interface IUserService
 {
-    ICollection<Models.User> GetUsers();
-    bool CreateUser(Models.User user);
-    Models.User GetUser(int id);
-    ICollection<Models.Review> GetReviews(int userId);
-    bool UpdateUser(int id, UpdateUserRequest user);
-    bool DeleteUser(Models.User user);
-    bool UserExists(int id);
-    ICollection<Models.FavoriteProduct> Favorites(int userId);
-    bool Save();
-    //UserResponse UpdateUser(UpdateUserRequest request);
-    //ICollection<UserResponse> GetUsers();
+  Task<ICollection<Models.User>> GetUsers();
+  Task<bool> CreateUser(Models.User user);
+  Task<Models.User> GetUser(int id);
+  Task<ICollection<Models.Review>> GetReviews(int userId);
+  Task<Models.User> UpdateUser(int id, UpdateUserRequest user);
+  Task<bool> DeleteUser(Models.User user);
+  Task<bool> UserExists(int id);
+  Task<ICollection<Models.FavoriteProduct>> Favorites(int userId);
+  Task<bool> Save();
 }
 
