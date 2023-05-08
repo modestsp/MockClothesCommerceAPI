@@ -2,9 +2,9 @@
 
 public class FavoriteProduct
 {
-    public int UserId { get; }
-    public int ProductId { get; }
-    public User User { get; }
-    public Product Product { get; }
+    public int UserId { get; set; }
+    public int ProductId { get; set; }
+    public User User { get; set; }
+    public Product Product { get; set; }
 }
 
