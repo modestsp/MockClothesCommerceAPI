@@ -6,15 +6,15 @@ The MockClothes API is a project that provides an interface to access a collecti
 Features
 The MockClothes API offers the following features:
 
-User Management:
+##User Management:
 
-Fetch a list of users
-Retrieve user details by ID
-Add a new user
-Update user information
-Delete a user
-Get favorites
-Delete favorites
+- Fetch a list of users
+- Retrieve user details by ID
+- Add a new user
+- Update user information
+- Delete a user
+- Get favorites
+- Delete favorites
 
 Product Management:
 
@@ -48,26 +48,28 @@ Clone the project repository from GitHub:
 bash
 Copy code
 git clone https://github.com/your-username/clothes-api.git
-Install the required dependencies using your preferred package manager:
+Navigate to the project directory:
 
 bash
 Copy code
 cd clothes-api
-npm install
+Restore the project dependencies using the .NET CLI:
+
+Copy code
+dotnet restore
 Set up the environment variables:
 
 Rename the .env.example file to .env.
 Modify the values in the .env file to match your environment.
+Start the API server using the .NET CLI:
 
-Start the API server:
-
-sql
+arduino
 Copy code
-npm start
-The API should now be running locally on http://localhost:3000. You can make requests to this address using tools like Postman or cURL.
+dotnet run
+The API should now be running locally on http://localhost:5000 or https://localhost:5001 if using HTTPS. You can make requests to this address using tools like Postman or cURL.
 
 API Documentation
-For detailed information about the API endpoints and their usage, please refer to the API Documentation file.
+For detailed information about the API endpoints and their usage, please refer to the API Docs page https://mockclothesdocs.vercel.app/.
 
 Contributing
 If you'd like to contribute to the Clothes API project, please follow these steps:
