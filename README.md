@@ -1,6 +1,6 @@
 # MockClothesAPI
 
-Description
+### Description
 The MockClothes API is a project that provides an interface to access a collection of clothes. It allows users to fetch a list of users, products, different categories of clothes, and product reviews. This readme file serves as a guide to understand the functionalities and usage of the API.
 
 Features
