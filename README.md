@@ -46,34 +46,28 @@ To get started with the MockClothes API, follow the steps below:
 Clone the project repository from GitHub:
 
 ```
-Copy code
 git clone https://github.com/your-username/clothes-api.git
+```
 Navigate to the project directory:
 
 ```
-```
-Copy code
 cd clothes-api
+```
 Restore the project dependencies using the .NET CLI:
 ```
-Copy code
 dotnet restore
-Set up the environment variables:
-
-Rename the .env.example file to .env.
-Modify the values in the .env file to match your environment.
-Start the API server using the .NET CLI:
-
-arduino
-Copy code
+```
+#### Start the API server using the .NET CLI:
+```
 dotnet run
+```
 The API should now be running locally on http://localhost:5000 or https://localhost:5001 if using HTTPS. You can make requests to this address using tools like Postman or cURL.
 
 API Documentation
 For detailed information about the API endpoints and their usage, please refer to the API Docs page https://mockclothesdocs.vercel.app/.
 
 Contributing
-If you'd like to contribute to the Clothes API project, please follow these steps:
+If you'd like to contribute to the MockClothes API project, please follow these steps:
 
 Fork the repository on GitHub.
 Create a new branch with a descriptive name for your feature or bug fix.
@@ -82,9 +76,9 @@ Ensure that the code follows the project's coding conventions and passes any tes
 Commit your changes and push the branch to your forked repository.
 Submit a pull request to the main repository, explaining your changes and their purpose.
 License
-The Clothes API project is licensed under the MIT License.
+The MockClothes API project is licensed under the MIT License.
 
 Contact
-If you have any questions, suggestions, or feedback regarding the Clothes API, please contact the project maintainer at your-email@example.com.
+If you have any questions, suggestions, or feedback regarding the Clothes API, please contact the project maintainer at csperichon@gmail.com.
 
-Thank you for using the Clothes API!
+Thank you for using the MockClothes API!
