@@ -6,7 +6,7 @@ The MockClothes API is a project that provides an interface to access a collecti
 Features
 The MockClothes API offers the following features:
 
-##User Management:
+## User Management:
 
 - Fetch a list of users
 - Retrieve user details by ID
@@ -16,15 +16,15 @@ The MockClothes API offers the following features:
 - Get favorites
 - Delete favorites
 
-Product Management:
+### Product Management:
 
-Fetch a list of products
-Retrieve product details by ID
-Add a new product
-Update product information
-Delete a product
-Add to favorites
-Add a review
+- Fetch a list of products
+- Retrieve product details by ID
+- Add a new product
+- Update product information
+- Delete a product
+- Add to favorites
+- Add a review
 
 Category Management:
 
