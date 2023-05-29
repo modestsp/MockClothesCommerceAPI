@@ -6,7 +6,7 @@ The MockClothes API is a project that provides an interface to access a collecti
 Features
 The MockClothes API offers the following features:
 
-## User Management:
+### User Management:
 
 - Fetch a list of users
 - Retrieve user details by ID
@@ -26,35 +26,36 @@ The MockClothes API offers the following features:
 - Add to favorites
 - Add a review
 
-Category Management:
+### Category Management:
 
-Fetch a list of categories
-Retrieve category details by ID
-Filter products by category
-Delete a category
+- Fetch a list of categories
+- Retrieve category details by ID
+- Filter products by category
+- Delete a category
 
-Product Review Management:
+### Product Review Management:
 
-Fetch product reviews
-Retrieve product review details by ID
-Update product review information
-Delete a product review
+- Fetch product reviews
+- Retrieve product review details by ID
+- Update product review information
+- Delete a product review
 
 Getting Started
-To get started with the Clothes API, follow the steps below:
+To get started with the MockClothes API, follow the steps below:
 
 Clone the project repository from GitHub:
 
-bash
+```
 Copy code
 git clone https://github.com/your-username/clothes-api.git
 Navigate to the project directory:
 
-bash
+```
+```
 Copy code
 cd clothes-api
 Restore the project dependencies using the .NET CLI:
-
+```
 Copy code
 dotnet restore
 Set up the environment variables:
