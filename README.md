@@ -66,6 +66,15 @@ The API should now be running locally on http://localhost:5000 or https://localh
 API Documentation
 For detailed information about the API endpoints and their usage, please refer to the API Docs page https://mockclothesdocs.vercel.app/.
 
+## Technologies Used
+
+This app was built using the following technologies:
+
+- ASP.NETCORE 6.0
+- Entiy Framework In Memory
+- AutoMapper
+- Swagger
+
 Contributing
 If you'd like to contribute to the MockClothes API project, please follow these steps:
 
