@@ -46,12 +46,12 @@ To get started with the MockClothes API, follow the steps below:
 Clone the project repository from GitHub:
 
 ```
-git clone https://github.com/your-username/clothes-api.git
+git clone https://github.com/modestsp/MockClothesCommerceAPI.git
 ```
 Navigate to the project directory:
 
 ```
-cd clothes-api
+cd MockClothesCommercerAPI
 ```
 Restore the project dependencies using the .NET CLI:
 ```
