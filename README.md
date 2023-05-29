@@ -40,7 +40,7 @@ The MockClothes API offers the following features:
 - Update product review information
 - Delete a product review
 
-Getting Started
+## Getting Started
 To get started with the MockClothes API, follow the steps below:
 
 Clone the project repository from GitHub:
@@ -63,7 +63,7 @@ dotnet run
 ```
 The API should now be running locally on http://localhost:5000 or https://localhost:5001 if using HTTPS. You can make requests to this address using tools like Postman or cURL.
 
-API Documentation
+## API Documentation
 For detailed information about the API endpoints and their usage, please refer to the API Docs page https://mockclothesdocs.vercel.app/.
 
 ## Technologies Used
@@ -75,7 +75,7 @@ This app was built using the following technologies:
 - AutoMapper
 - Swagger
 
-Contributing
+### Contributing
 If you'd like to contribute to the MockClothes API project, please follow these steps:
 
 Fork the repository on GitHub.
@@ -84,10 +84,10 @@ Make the necessary changes in your branch.
 Ensure that the code follows the project's coding conventions and passes any tests.
 Commit your changes and push the branch to your forked repository.
 Submit a pull request to the main repository, explaining your changes and their purpose.
-License
+### License
 The MockClothes API project is licensed under the MIT License.
 
-Contact
+## Contact
 If you have any questions, suggestions, or feedback regarding the Clothes API, please contact the project maintainer at csperichon@gmail.com.
 
 Thank you for using the MockClothes API!
