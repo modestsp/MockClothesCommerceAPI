@@ -75,15 +75,6 @@ This app was built using the following technologies:
 - AutoMapper
 - Swagger
 
-### Contributing
-If you'd like to contribute to the MockClothes API project, please follow these steps:
-
-Fork the repository on GitHub.
-Create a new branch with a descriptive name for your feature or bug fix.
-Make the necessary changes in your branch.
-Ensure that the code follows the project's coding conventions and passes any tests.
-Commit your changes and push the branch to your forked repository.
-Submit a pull request to the main repository, explaining your changes and their purpose.
 ### License
 The MockClothes API project is licensed under the MIT License.
 
