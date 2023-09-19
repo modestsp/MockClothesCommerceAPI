@@ -39,7 +39,7 @@ In case you want to use Swagger:
 ```
 docker run -p 8080:80 -e ASPNETCORE_ENVIROnMENT='Development' modestsp/mock_clothes_api:v1
 ```
-The API should new be running locally on http://localhost:8080. You can make request using tools like Postman or cURL.
+The API should new be running locally on http://localhost:8080 or http://localhost:8080/swagger. You can make request using tools like Postman or cURL.
 
 ### Features
 The MockClothes API offers the following features:
@@ -109,26 +109,156 @@ curl -X 'DELETE' \
 ### Product Management:
 
 - Fetch a list of products
+```
+curl -X 'GET' \
+  'http://localhost:8080/Products' \
+  -H 'accept: */*'
+```
 - Retrieve product details by ID
+```
+curl -X 'GET' \
+  'http://localhost:8080/Products/1' \
+  -H 'accept: */*'
+```
 - Add a new product
+```
+curl -X 'POST' \
+  'http://localhost:8080/Products' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string",
+  "description": "string",
+  "price": 0,
+  "stars": 0,
+  "categoryId": 1,
+  "tags": [
+    "string"
+  ]
+}'
+```
 - Update product information
+```
+curl -X 'PUT' \
+  'http://localhost:8080/Products/1' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string",
+  "description": "string",
+  "price": 0,
+  "tags": [
+    "string"
+  ]
+}'
+```
 - Delete a product
-- Add to favorites
-- Add a review
+```
+curl -X 'DELETE' \
+  'http://localhost:8080/Products/12' \
+  -H 'accept: */*'
+```
+- Add to favorites a product
+```
+curl -X 'POST' \
+  'http://localhost:8080/Products/1/favorites' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "userId": 1,
+  "productId": 1
+}'
+```
+- Add a review to a product
+```
+curl -X 'POST' \
+  'http://localhost:8080/Products/1/reviews' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "content": "string",
+  "rating": 0,
+  "userId": 1,
+  "productId": 1
+}'
+```
+- Get reviews from a product
+```
+curl -X 'GET' \
+  'http://localhost:8080/Products/1/reviews' \
+  -H 'accept: */*'
+```
 
 ### Category Management:
 
 - Fetch a list of categories
+```
+curl -X 'GET' \
+  'http://localhost:8080/Categories' \
+  -H 'accept: */*'
+```
+- Create a category
+```
+curl -X 'POST' \
+  'http://localhost:8080/Categories' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string"
+}'
+```
 - Retrieve category details by ID
+```
+curl -X 'GET' \
+  'http://localhost:8080/Categories/1' \
+  -H 'accept: */*'
+```
 - Filter products by category
+```
+curl -X 'GET' \
+  'http://localhost:8080/Categories/1/products' \
+  -H 'accept: */*'
+```
 - Delete a category
+```
+curl -X 'DELETE' \
+  'http://localhost:8080/Categories/2' \
+  -H 'accept: */*'
+```
 
 ### Product Review Management:
 
-- Fetch product reviews
+- Fetch all reviews
+```
+curl -X 'GET' \
+  'http://localhost:8080/Reviews' \
+  -H 'accept: */*'
+```
 - Retrieve product review details by ID
+```
+curl -X 'GET' \
+  'http://localhost:8080/Reviews/1' \
+  -H 'accept: */*'
+```
 - Update product review information
+```
+curl -X 'PUT' \
+  'http://localhost:8080/Reviews/1' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "content": "string",
+  "rating": 1,
+  "userId": 1,
+  "productId": 1
+}'
+```
 - Delete a product review
+```
+curl -X 'DELETE' \
+  'http://localhost:8080/Reviews/1' \
+  -H 'accept: */*'
+```
 
 ## API Documentation
 For detailed information about the API endpoints and their usage, please refer to the API Docs page https://mockclothesdocs.vercel.app/.
