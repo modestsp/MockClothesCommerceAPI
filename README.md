@@ -37,7 +37,7 @@ docker run -p 8080:80 modestsp/mock_clothes_api:v1
 ```
 In case you want to use Swagger:
 ```
-docker run -p 8080:80 -e ASPNETCORE_ENVIROnMENT='Development' modestsp/mock_clothes_api:v1
+docker run -p 8080:80 -e ASPNETCORE_ENVIRONMENT='Development' modestsp/mock_clothes_api:v1
 ```
 The API should new be running locally on http://localhost:8080 or http://localhost:8080/swagger. You can make request using tools like Postman or cURL.
 
