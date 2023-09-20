@@ -41,7 +41,7 @@ docker run -p 8080:80 -e ASPNETCORE_ENVIRONMENT='Development' modestsp/mock_clot
 ```
 The API should new be running locally on http://localhost:8080 or http://localhost:8080/swagger. You can make request using tools like Postman or cURL.
 
-### Features
+## Features
 The MockClothes API offers the following features:
 
 ### User Management:
