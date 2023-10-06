@@ -24,7 +24,7 @@ dotnet restore
 ```
 dotnet run
 ```
-The API should now be running locally on http://localhost:5000 or https://localhost:5001 if using HTTPS. You can make requests to this address using tools like Postman or cURL.
+The API should now be running locally on http://localhost:5110 or https://localhost:7264 if using HTTPS. You can make requests to this address using tools like Postman or cURL.
 
 ### Docker
 Pull the docker image from DockerHub:
